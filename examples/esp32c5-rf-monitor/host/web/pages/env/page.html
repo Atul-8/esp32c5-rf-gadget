@@ -1,0 +1,108 @@
+<div class="panel" id="env-banner-panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="env.banner.title">哪些信道异常，谁占着它们</span>
+    <span class="panel__hint" data-i18n="env.banner.hint">本页数据来自本机无线网卡的管理帧解析，不是板子测的；板子只提供能量</span>
+  </div>
+  <div class="panel__body">
+    <ul class="notes" id="env-banner"></ul>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="card__label" data-i18n="env.card.ssid">可见热点</div>
+    <div class="card__value" id="env-ssid">—</div>
+    <div class="card__note" data-i18n="env.card.ssidNote">含隐藏 SSID</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="env.card.bss">射频条目</div>
+    <div class="card__value" id="env-bss">—</div>
+    <div class="card__note" data-i18n="env.card.bssNote">一个 SSID 可跨多个频点</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="env.card.hidden">隐藏网络</div>
+    <div class="card__value" id="env-hidden">—</div>
+    <div class="card__note" data-i18n="env.card.hiddenNote">有能量但读不到名字</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="env.card.known">已灌入固件</div>
+    <div class="card__value" id="env-known">—</div>
+    <div class="card__note" id="env-known-note" data-i18n="env.card.knownNote">当前自动下发到固件的频点数</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="env.act.title">扫描与下发</span>
+    <span class="panel__hint" data-i18n="env.act.hint">名单是快照：路由器会自动换信道，建议每 60~120 秒重扫重灌</span>
+  </div>
+  <div class="panel__body">
+    <button id="env-scan" class="btn btn--primary" data-i18n="env.act.scan">扫描 WiFi 环境</button>
+    <!--
+      下面两个按钮只隐藏、不删代码。
+      自动监测（watch）每轮本来就会重扫 + 整批重灌名单，不需要人手动点；
+      按钮留着是为了排查时能手工强制下发/清空 —— 把 style 去掉就回来了。
+      这里用内联 style 而不是 hidden 属性：.btn 自带 display:inline-flex，
+      会盖掉 hidden 的 display:none，看起来像“隐藏没生效”。
+    -->
+    <button id="env-push" class="btn" disabled data-i18n="env.act.push" style="display:none">下发已知热点到固件</button>
+    <button id="env-pushclear" class="btn" data-i18n="env.act.clear" style="display:none">清空固件名单</button>
+    <div class="kv" id="env-status" style="margin-top:8px;">还没扫描</div>
+  </div>
+</div>
+
+<div class="panel" id="env-watch-panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="env.watch.title">自动监测模式</span>
+    <span class="panel__hint" data-i18n="env.watch.hint">连上设备即自动启动；两种模式在射频侧用同一份常驻采集，差别是多久重扫一次 WiFi</span>
+  </div>
+  <div class="panel__body">
+    <div class="btn-row" id="env-watch-modes">
+      <button id="env-mode-off" class="btn" data-i18n="env.watch.off">关闭</button>
+      <button id="env-mode-daily" class="btn btn--primary" data-i18n="env.watch.daily">日常</button>
+      <button id="env-mode-burst" class="btn" data-i18n="env.watch.burst">狂暴</button>
+      <button id="env-now" class="btn" data-i18n="env.watch.now">立刻检查一次</button>
+    </div>
+    <div class="row row--gap" style="margin-top:10px;">
+      <label class="field">
+        <span class="field__label" data-i18n="env.watch.interval">日常模式间隔（秒）</span>
+        <input id="env-interval" type="number" min="60" max="86400" step="60" value="120" />
+      </label>
+    </div>
+    <div class="kv" id="env-watch-state">未启动</div>
+    <div class="kv" id="env-watch-detail">—</div>
+    <ul class="notes" id="env-watch-notes"></ul>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="env.ch.title">信道占用表</span>
+    <span class="panel__hint" data-i18n="env.ch.hint">
+      利用率 = AP 在 BSS Load 元素里自报的信道占用率（÷255），不是我们测的能量；— = AP 没上报
+    </span>
+  </div>
+  <div class="panel__body">
+    <table class="table" id="env-table">
+      <thead>
+        <tr>
+          <th data-i18n="env.th.mhz">频率</th>
+          <th data-i18n="env.th.ch">信道</th>
+          <th data-i18n="env.th.ssid">SSID</th>
+          <th data-i18n="env.th.bssid">BSSID</th>
+          <th data-i18n="env.th.sig">信号</th>
+          <th data-i18n="env.th.util">利用率</th>
+          <th data-i18n="env.th.sta">客户端</th>
+        </tr>
+      </thead>
+      <tbody id="env-tbody">
+        <tr><td colspan="7" class="muted" data-i18n="env.act.idle">还没扫描</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head"><span class="panel__title" data-i18n="env.notes.title">判读说明与边界</span></div>
+  <ul class="notes" id="env-notes"></ul>
+</div>

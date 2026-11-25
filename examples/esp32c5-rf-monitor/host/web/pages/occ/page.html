@@ -1,0 +1,75 @@
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="occ.banner.title">信道占用统计（板子实测）</span>
+    <span class="panel__hint" data-i18n="occ.banner.hint">占空比 = 该信道「有传输」的时间比例，不是信号强度</span>
+  </div>
+  <div class="panel__body">
+    <ul class="notes" id="occ-banner"></ul>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="card__label" data-i18n="occ.card.swept">已有样本的信道</div>
+    <div class="card__value" id="occ-swept">—</div>
+    <div class="card__note" data-i18n="occ.card.sweptNote">没扫到的信道不显示成 0%，那是两回事</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="occ.card.busiest">当前最忙</div>
+    <div class="card__value" id="occ-busiest">—</div>
+    <div class="card__note" id="occ-busiest-note" data-i18n="occ.card.busiestNote">按「当前占空比」取最高</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="occ.card.frames">统计样本</div>
+    <div class="card__value" id="occ-frames">—</div>
+    <div class="card__note" id="occ-frames-note" data-i18n="occ.card.framesNote">对上信道的帧数 / 进入统计的帧数</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="occ.tbl.title">逐信道占用</span>
+    <span class="panel__hint" data-i18n="occ.tbl.hint">板子一侧统计（上位机累加），能测别人家的协议：BLE 广播、图传、遥控、无绳电话</span>
+  </div>
+  <div class="panel__body">
+    <div class="btn-row">
+      <button id="occ-sort" class="btn" data-i18n="occ.act.sort">按占用排序</button>
+      <button id="occ-csv" class="btn" data-i18n="occ.act.csv">导出 CSV</button>
+      <button id="occ-reset" class="btn" data-i18n="occ.act.reset">清零</button>
+      <div class="kv" id="occ-status" style="margin-left:8px;">—</div>
+    </div>
+    <table class="table" id="occ-table">
+      <thead>
+        <tr>
+          <th data-i18n="occ.th.mhz">频率</th>
+          <th data-i18n="occ.th.ch">信道</th>
+          <th data-i18n="occ.th.band">频段</th>
+          <th data-i18n="occ.th.now">当前</th>
+          <th data-i18n="occ.th.max">峰值</th>
+          <th data-i18n="occ.th.avg">平均</th>
+          <th data-i18n="occ.th.round">占空比</th>
+        </tr>
+      </thead>
+      <tbody id="occ-tbody">
+        <tr><td colspan="7" class="muted" data-i18n="occ.empty">还没有数据：先在上方点「开始」让板子扫起来</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="occ.notes.title">怎么读这张表</span>
+    <span class="panel__hint" data-i18n="occ.notes.hint">口径写在明处，免得把 0% 当成「这里没人」</span>
+  </div>
+  <div class="panel__body">
+    <ul class="notes">
+      <li data-i18n="occ.notes.judge">判据与圆屏第二页同源：一帧取中间一半 bin，p50 − p25 &gt; 15 码判「有传输」。功率码是相对值，不是 dBm。</li>
+      <li data-i18n="occ.notes.now">「当前」是逐帧 EMA（α = 1/8，约 1 秒时间常数），比板端（逐窗 EMA，τ ≈ 24 秒）跳得快，两者只比高低不比绝对值。</li>
+      <li data-i18n="occ.notes.max">「峰值」要盯：BLE 广播、遥控这类协议很尖，平均值会被摊薄，峰值远高于当前值就说明是突发发射。</li>
+      <li data-i18n="occ.notes.avg">「平均」= 累计命中帧 / 总帧，看的是「这一整段时间里一直在发射吗」；图传、视频流是这种形态。</li>
+      <li data-i18n="occ.notes.unseen">「—」= 这一轮扫描没落在这个信道上，**不是 0%**。宽窗扫频时很多信道压根没被单独测过。</li>
+      <li data-i18n="occ.notes.gain">信道之间横比必须固定增益（顶栏 GAIN 固定档）；硬件 AGC 会把每个信道都拉到相近电平，差异被吃掉。</li>
+    </ul>
+  </div>
+</div>

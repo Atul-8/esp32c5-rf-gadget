@@ -1,0 +1,37 @@
+<div class="panel" id="round-panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="round.title">圆屏轮播（真板自动循环翻页）</span>
+    <span class="panel__hint" data-i18n="round.hint">控制板子圆屏三页（频谱热力 / 信道占用 / 时频瀑布）自动循环切换；秒数 = 每页停留时间，全 0 = 关闭</span>
+  </div>
+  <div class="panel__body">
+    <div class="round-controls">
+      <label class="field"><span data-i18n="round.p1">页 1 秒数</span>
+        <input id="round-sec0" type="number" min="0" max="255" step="1" value="8">
+      </label>
+      <label class="field"><span data-i18n="round.p2">页 2 秒数</span>
+        <input id="round-sec1" type="number" min="0" max="255" step="1" value="25">
+      </label>
+      <label class="field"><span data-i18n="round.p3">页 3 秒数</span>
+        <input id="round-sec2" type="number" min="0" max="255" step="1" value="8">
+      </label>
+      <button id="round-start" class="btn btn--primary" data-i18n="round.start">开始轮播</button>
+      <button id="round-stop" class="btn" data-i18n="round.stop">停止轮播</button>
+      <button id="round-query" class="btn btn--ghost" data-i18n="round.query">读回板子状态</button>
+    </div>
+    <ul class="notes" id="round-notes"></ul>
+    <div class="round-state mono" id="round-state">—</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="round.faqTitle">使用说明与边界</span>
+  </div>
+  <div class="panel__body">
+    <ul class="notes">
+      <li data-i18n="round.faq1">轮播是板子固件里的显示层循环（RD VIEWSEC），上位机只负责写入秒数；写入后即使关掉上位机，板子也会一直转，直到再写全 0 或断电。</li>
+      <li data-i18n="round.faq2">命令在两次扫描之间发（同增益通道纪律），点按钮后可能要等下一个扫描间隙才落地；「读回板子状态」能看到固件确认的秒数。</li>
+      <li data-i18n="round.faq3">页 2 秒数给长一点（默认 25 s）：信道占用表 8 页翻完需要时间，太短会来不及看。</li>
+    </ul>
+  </div>
+</div>

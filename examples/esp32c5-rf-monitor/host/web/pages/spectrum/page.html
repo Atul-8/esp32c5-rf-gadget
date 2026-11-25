@@ -1,0 +1,40 @@
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="scanbar.title">扫频进度（频段地图）</span>
+    <span class="panel__hint" data-i18n="scanbar.hint">游标 = 正在读的窗；一段 = 一个频段，一小格 = 一个 20MHz 窗；扫到最右会回到最左继续下一轮</span>
+  </div>
+  <div class="panel__body">
+    <div id="scanbar" class="scanbar" data-i18n="scanbar.wait">等待扫描计划…</div>
+    <div class="scanbar__note" data-i18n="scanbar.heatHint">格子越亮 = 该窗历史占用越强（跨轮累积，相对码）</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="spectrum.title">实时频谱（当前窗口）</span>
+    <span class="panel__hint" id="spec-hint" data-i18n="spectrum.hint">
+      横轴 = 频率（本窗口），纵轴 = 功率码（相对 dB 码，不是 dBm）；实线 = 当前帧，紫线 = 峰值保持
+    </span>
+  </div>
+  <div class="panel__body">
+    <canvas id="spec-canvas" class="plot" height="210" data-fit-grow="1"></canvas>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="spectrum.wf3d.title">3D 瀑布</span>
+    <span class="panel__hint" data-i18n="spectrum.wf3d.hint">越靠前越新；高度 = 功率码；鼠标左键旋转 / 滚轮缩放</span>
+  </div>
+  <div class="panel__body" id="wf-3d" data-fit-grow="1" style="height: calc(300px * var(--fit-scale, 1) + var(--fit-grow, 0px));"></div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" id="wf2d-title">2D 瀑布（最近 240 帧）</span>
+    <span class="panel__hint" data-i18n="spectrum.wf2d.hint">每帧一行，自上而下变旧；对比度按本帧动态范围自动拉伸</span>
+  </div>
+  <div class="panel__body">
+    <canvas id="wf-canvas" class="plot" height="150" data-fit-grow="1"></canvas>
+  </div>
+</div>

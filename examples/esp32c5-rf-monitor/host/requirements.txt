@@ -1,0 +1,4 @@
+# 上位机（WebView 版）依赖
+# 只加了两样东西：Qt 的 WebEngine 外壳 + 串口
+PySide6>=6.5        # QApplication + QWebEngineView + QWebChannel
+pyserial>=3.5       # 串口（底层 app/core 已在用）

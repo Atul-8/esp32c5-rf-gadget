@@ -1,0 +1,52 @@
+CONFIG_IDF_TARGET="esp32c5"
+CONFIG_ESPTOOLPY_FLASHSIZE_2MB=y
+CONFIG_ESP_PHY_ENABLE_CERT_TEST=y
+CONFIG_ESP_PHY_DEBUG=y
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+CONFIG_FREERTOS_HZ=1000
+CONFIG_COMPILER_OPTIMIZATION_PERF=y
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+# CONFIG_PM_ENABLE is not set
+# Leave enough non-modem SRAM for static data and task stacks.
+# CONFIG_ESP_WIFI_IRAM_OPT is not set
+# CONFIG_ESP_WIFI_EXTRA_IRAM_OPT is not set
+# CONFIG_ESP_WIFI_RX_IRAM_OPT is not set
+# CONFIG_ESP_WIFI_SLP_IRAM_OPT is not set
+# CONFIG_ESP_PHY_IRAM_OPT is not set
+# CONFIG_ESP_WIFI_AMPDU_TX_ENABLED is not set
+# CONFIG_ESP_WIFI_AMPDU_RX_ENABLED is not set
+
+# Native USB only. The UART0 bridge is DISABLED because the Seeed Round Display
+# occupies its default pins: GPIO11 = LCD backlight (D6), GPIO12 = touch INT (D7).
+# Leaving the bridge on would drive the backlight with UART data and feed touch
+# interrupts into the command parser. Native USB-Serial-JTAG (COM56) is unaffected.
+# CONFIG_ESP_SDR_UART_ENABLED is not set
+
+# Round Display bus settings are hardcoded in main/common/round_ui.c
+# (SPI2 @ 40 MHz, band 24 rows => 2 x 11,520 B ping-pong).
+
+# --- SRAM 预算：本固件只把 WiFi 当 PHY 驱动用（esp_wifi_init/start + promiscuous），
+# --- 从不联网、不做热点、不做 WPA 认证。下面这些默认开着的协议栈功能占 dram0 BSS，
+# --- 在这里全部关掉，把 C5 那 0x40820000 的 modem 红线让出来给显示屏驱动。
+# CONFIG_ESP_WIFI_SOFTAP_SUPPORT is not set
+# CONFIG_ESP_WIFI_SOFTAP_SAE_SUPPORT is not set
+# CONFIG_ESP_WIFI_WPA3_COMPATIBLE_SUPPORT is not set
+# CONFIG_ESP_WIFI_GMAC_SUPPORT is not set
+CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM=4
+CONFIG_ESP_WIFI_DYNAMIC_RX_BUFFER_NUM=8
+CONFIG_ESP_WIFI_ESPNOW_MAX_ENCRYPT_NUM=0
+CONFIG_ESP_WIFI_SOFTAP_BEACON_MAX_LEN=0
+
+# --- 外部 PSRAM：默认关闭，理由是帧率不是触摸 -----------------------------------
+# XIAO ESP32-C5 板载 8 MB Quad PSRAM（Seeed wiki 规格表：8 MB PSRAM & 8 MB Flash）。
+# 实测开启后的唯二影响（对照实验，唯一变量 CONFIG_SPIRAM）：
+#   1) 帧率下降：render_us 2513 -> 3538，fps 41.9 -> 34.9（-20%）。
+#      PSRAM 与 flash 共用 MSPI，取指/数据路径变慢。
+#   2) 内存变宽：spiram_total=8388608，内部堆 51,511 B -> 堆 + 8 MB 可用。
+# 圆屏侧不需要大内存，所以默认关闭以换回 41.9 fps。
+# 若将来要开（例如 3D 瀑布要几 MB 缓冲），需接受 35 fps。
+# 先前版本曾写过「开启后触摸从 I2C 总线消失」——那是错的：当时把不稳定的
+# 一次性总线扫描结果当成了因果。修好探测重试后实测 PSRAM 版照样 i2c=2:1:2E。
+# CONFIG_SPIRAM is not set

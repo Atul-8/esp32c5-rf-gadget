@@ -1,0 +1,74 @@
+<div class="panel" id="wf-banner-panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="wf.banner.title">周期快照，非连续实时</span>
+    <span class="panel__hint" data-i18n="wf.banner.hint">单射频分时扫描：帧与帧之间有接收空档；图上每一行是「真的扫到过」的一轮，不是连续采样</span>
+  </div>
+  <div class="panel__body">
+    <ul class="notes" id="wf-banner"></ul>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="card__label" data-i18n="wf.card.sweep">轮扫周期</div>
+    <div class="card__value" id="wf-sweep-s">—</div>
+    <div class="card__note" id="wf-sweep-note">等待数据</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="wf.card.sweeps">已扫轮数</div>
+    <div class="card__value" id="wf-sweeps">—</div>
+    <div class="card__note" id="wf-sweeps-note" data-i18n="wf.card.sweepsNote">一行 = 一轮完整轮扫</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="wf.card.windows">覆盖窗口</div>
+    <div class="card__value" id="wf-windows">—</div>
+    <div class="card__note" id="wf-window-note" data-i18n="wf.card.windowsNote">2.4G / 5G 低 / 5G 高，窗间重叠</div>
+  </div>
+  <div class="card">
+    <div class="card__label" data-i18n="wf.card.buffer">环形缓冲</div>
+    <div class="card__value" id="wf-buffer">—</div>
+    <div class="card__note" id="wf-buffer-note" data-i18n="wf.card.bufferNote">满了滚动覆盖最旧的帧</div>
+  </div>
+</div>
+
+<div class="panel" data-panel-static="1">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="wf.report.title">出图（PNG + HTML 翻页）</span>
+    <span class="panel__hint" data-i18n="wf.report.hint">按缓冲里现有的帧渲染；要小时级历史请用 app/waterfall.py 读 SQLite</span>
+  </div>
+  <div class="panel__body">
+    <button id="wf-render" class="btn btn--primary" data-i18n="wf.report.btn">生成 PNG + HTML</button>
+    <button id="wf-open" class="btn" disabled data-i18n="wf.report.open">在浏览器打开</button>
+    <div class="kv" id="wf-files" style="margin-top:8px;">还没有出图</div>
+  </div>
+</div>
+
+<div class="panel" id="wf-heat-panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="wf.heat.title">记忆热力</span>
+    <span class="panel__hint" data-i18n="wf.heat.hint">每格一个字节：扫到信号 +1（封顶 255），扫不到 -1（触底 0）</span>
+  </div>
+  <div class="panel__body">
+    <canvas id="wf-heat-canvas" class="plot" height="56" data-fit-grow="1"></canvas>
+    <div class="kv" id="wf-heat-info">等待数据</div>
+    <button id="wf-heat-clear" class="btn" data-i18n="wf.heat.clear">一键清除记忆</button>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <span class="panel__title" data-i18n="wf.map.title">全频段时频瀑布</span>
+    <span class="panel__hint" id="wf-map-hint" data-i18n="wf.map.hint">
+      横轴 = 频率（三个频段各自等宽显示，刻度按各自跨度）；纵轴 = 时间（自上而下变旧）
+    </span>
+  </div>
+  <div class="panel__body">
+    <canvas id="wf-full-canvas" class="plot" height="300" data-fit-grow="1"></canvas>
+    <div class="kv" id="wf-cursor" data-i18n="wf.cursor.idle">鼠标移到图上可读频率 / 功率码</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel__head"><span class="panel__title" data-i18n="wf.notes.title">判读说明与边界</span></div>
+  <ul class="notes" id="wf-notes"><li class="muted" data-i18n="wf.card.wait">等待数据</li></ul>
+</div>

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "spectrum",
+    "title": "实时频谱",
+    "hint": "全频段滚动扫描",
+    "title_en": "Live spectrum",
+    "hint_en": "full-band rolling sweep"
+  },
+  {
+    "id": "waterfall",
+    "title": "热力图记忆",
+    "hint": "全频段时频图",
+    "title_en": "Heatmap memory",
+    "hint_en": "band-sweep time-frequency"
+  },
+  {
+    "id": "env",
+    "title": "异常热点",
+    "hint": "信道占用 + 未知设备",
+    "title_en": "Rogue APs",
+    "hint_en": "channel load + unknown devices"
+  },
+  {
+    "id": "occ",
+    "title": "信道占用",
+    "hint": "38 信道逐条占空比 + CSV",
+    "title_en": "Occupancy",
+    "hint_en": "38-channel duty cycle + CSV"
+  },
+  {
+    "id": "round",
+    "title": "圆屏轮播",
+    "hint": "真板自动循环翻页开关",
+    "title_en": "Round display",
+    "hint_en": "carousel auto-paging on the board"
+  }
+]
